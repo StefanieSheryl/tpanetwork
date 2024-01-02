@@ -1,1 +1,29 @@
-haha
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Docker
+        uses: actions/setup-docker@v2
+
+      - name: Build and Run Docker Compose
+        run: |
+          sudo docker-compose up -d
+          sleep 10  
+
+      - name: Access Login Page
+        run: |
+          curl -L http://localhost:8080/pages/login.php
+
+      - name: Stop Docker Compose
+        run: sudo docker-compose down
